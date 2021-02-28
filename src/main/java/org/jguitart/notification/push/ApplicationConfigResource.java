@@ -56,15 +56,14 @@ public class ApplicationConfigResource {
 
     @DELETE
     @Path("{id}")
-    public Response deleteApplicationConfig() {
-        return null;
-    }
+    public Response deleteApplicationConfig(@PathParam("id") Long id) {
+        if(!applicationConfigService.exists(id)) {
+            ErrorResponseDto errorResponseDto = ErrorResponseDto.builder().error(Errors.ERROR_APP_CONFIG_NOT_EXISTS).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(errorResponseDto).build();
+        }
+        applicationConfigService.delete(id);
 
-    @PATCH
-    @Path("{id}")
-    public Response pathcApplicationConfig() {
-        return null;
+        return Response.ok().build();
     }
-
 
 }

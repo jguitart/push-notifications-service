@@ -94,4 +94,14 @@ public class ApplicationConfigService {
         ApplicationConfigDto result = dtoTranslator.getApplicationConfigDto(instance);
         return result;
     }
+
+    public boolean exists(Long id) {
+        long count = ApplicationConfig.count("id", id);
+        return count > 0;
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        ApplicationConfig.deleteById(id);
+    }
 }
