@@ -19,6 +19,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-jdbc-mysql'
     implementation 'io.quarkus:quarkus-arc'
+
+    // Pushy
+    implementation 'com.eatthepath:pushy:0.14.2'
+    runtime 'io.netty:netty-tcnative-boringssl-static:2.0.34.Final'
+
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation "org.assertj:assertj-core:3.11.1"

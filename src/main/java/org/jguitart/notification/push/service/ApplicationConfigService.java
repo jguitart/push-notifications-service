@@ -2,6 +2,8 @@ package org.jguitart.notification.push.service;
 
 import org.jguitart.notification.push.dto.ApplicationConfigDto;
 import org.jguitart.notification.push.model.ApplicationConfig;
+import org.jguitart.notification.push.model.ApplicationConfigAndroid;
+import org.jguitart.notification.push.model.ApplicationConfigIos;
 import org.jguitart.notification.push.model.Errors;
 import org.jguitart.notification.push.util.KeyStoreUtils;
 
@@ -64,8 +66,6 @@ public class ApplicationConfigService {
                 return Errors.ERROR_APP_CONFIG_ANDROID_KEY_MANDATORY;
             }
         }
-
-
         return null;
     }
 
@@ -87,6 +87,32 @@ public class ApplicationConfigService {
 
         ApplicationConfigDto result = dtoTranslator.getApplicationConfigDto(applicationConfig);
         return result;
+    }
+
+    @Transactional
+    public void update(Long id, ApplicationConfigDto applicationConfigDto) {
+        ApplicationConfig instance = ApplicationConfig.findById(id);
+        ApplicationConfig updateData = dtoTranslator.getApplicationConfig(applicationConfigDto);
+
+        if(instance.getAndroidConfig() != null && updateData.getAndroidConfig() == null) {
+            ApplicationConfigAndroid.deleteById(instance.getAndroidConfig().getId());
+        }
+
+        if(instance.getIosConfig() != null && updateData.getIosConfig() == null) {
+            ApplicationConfigIos.deleteById(instance.getIosConfig().getId());
+        }
+
+        instance.setName(updateData.getName());
+        instance.setAndroidConfig(updateData.getAndroidConfig());
+
+        if(instance.getAndroidConfig().getId() == null ) {
+            instance.getAndroidConfig().persistAndFlush();
+        }
+
+        instance.setIosConfig(updateData.getIosConfig());
+        if(instance.getIosConfig().getId() == null) {
+            instance.getIosConfig().persistAndFlush();
+        }
     }
 
     public ApplicationConfigDto get(Long id) {

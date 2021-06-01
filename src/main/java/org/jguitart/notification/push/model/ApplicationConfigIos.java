@@ -20,9 +20,15 @@ public class ApplicationConfigIos extends PanacheEntityBase {
     Long id;
     String bundleId;
 
+    ApnsServerType apnsServerType;
+
     @Lob
     byte[] apnsCertificate;
 
     String apnsCertificatePassword;
+
+    enum ApnsServerType {
+        DEV, PROD
+    }
 
 }
